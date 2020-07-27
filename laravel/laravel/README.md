@@ -1,5 +1,6 @@
 ### Place your laravel files here
 
+```
 .
 ├── docker-compose.yml
 ├── Dockerfile
@@ -11,3 +12,5 @@
 │   └── public/
 ├── mysql/
 └── nginx/
+```
+
