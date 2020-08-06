@@ -11,7 +11,7 @@ services:
     volumes:
       - ./pgdata:/var/lib/postgresql/data
 
-  web:
+  phoenix:
     build:
       context: .
       dockerfile: Dockerfile
