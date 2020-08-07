@@ -1,0 +1,15 @@
+tmp
+_build
+cover
+deps
+doc
+.fetch
+erl_crash.dump
+*.ez
+*.beam
+config/*.secret.exs
+.elixir_ls/
+npm-debug.log
+assets/node_modules
+priv/static
+
