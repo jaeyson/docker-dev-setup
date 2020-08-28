@@ -2,7 +2,7 @@ version: "3"
 
 services:
   db:
-    container_name: db
+    container_name: db # point this hostname at config/dev.exs
     image: postgres:alpine
     restart: always
     environment:
@@ -30,4 +30,3 @@ services:
       - "4000:4000"
     depends_on:
       - db
-
