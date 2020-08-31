@@ -1,4 +1,9 @@
-tmp
+### Git ###
+.git
+.gitignore
+.gitattributes
+
+### Elixir/Phoneix ###
 _build
 cover
 deps
@@ -9,7 +14,35 @@ erl_crash.dump
 *.beam
 config/*.secret.exs
 .elixir_ls/
+tmp
+priv/static
+### Elixir Patch ###
+
+### NodeJS ###
 npm-debug.log
 assets/node_modules
-priv/static
 
+### Vim ###
+# Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Session
+Session.vim
+Sessionx.vim
+
+# Temporary
+.netrwhist
+*~
+
+# Auto-generated tag files
+tags
+
+# Persistent undo
+[._]*.un~
+
+# Coc configuration directory
+.vim
