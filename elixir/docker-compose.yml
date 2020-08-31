@@ -25,7 +25,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./app:/app
+      - ./app:/home/elixiruser/app
     ports:
       - "4000:4000"
     depends_on:
