@@ -2,13 +2,13 @@ version: "3"
 
 services:
   db:
-    container_name: db # point this hostname at config/dev.exs
+    container_name: db # use this hostname at config/dev.exs
     image: postgres:alpine
     restart: always
     environment:
       # POSTGRES_DB: app_dev # config/dev.exs
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: $${POSTGRES_USER}
+      POSTGRES_PASSWORD: $${POSTGRES_PASSWORD}
       # POSTGRES_HOST_AUTH_METHOD: trust
       PGDATA: /var/lib/postgresql/data/pgdata
       # user: ${USER}
@@ -28,5 +28,16 @@ services:
       - ./app:/home/elixiruser/app
     ports:
       - "4000:4000"
+    depends_on:
+      - db
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: $${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: $${{PGADMIN_DEFAULT_PASSWORD}}
+    ports:
+      - "5555:80"
     depends_on:
       - db

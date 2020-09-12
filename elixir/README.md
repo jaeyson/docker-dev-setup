@@ -7,30 +7,37 @@ Elixir/
 │   ├── .formatter.exs
 │   ├── mix.exs
 │   └── other elixir dir/
+├── .env.example
 ├── .dockerignore
+├── .gitattributes
+├── .gitignore
 ├── docker-compose.yml
 └── Dockerfile
 ```
 
-## Option 1: create a new project
+## env
 
-build
+```bash
+cp .env.example .env && source $_
+```
+
+## build
 
 ```bash
 docker-compose build && docker-compose up -d
 
-# check if its running
+# check if it is running
 docker ps
 ```
 
-create elixir project
+## create elixir project
 
 ```bash
 # create app/ folder for elixir project
 mkdir app && cd $_
 
 # add Elixir project
-docker-compose run --rm app mix new . --app <APP_NAME>
+docker-compose run --rm app mix new . <APP_NAME>
 
 # add Phoenix project
 docker-compose run --rm app mix phx.new . --app <APP_NAME>
@@ -52,21 +59,16 @@ docker-compse run --rm app npm install --prefix ./assets
 docker exec -it app mix phx.server
 ```
 
-test
+## test
 
 ```bash
 # should be inside app/ folder before running command
-
 docker-compose run --rm app mix test
 ```
 
-## Option 2: existing project
+## existing project
 
-same thing with option 1:
-
-- uncomment `COPY` command in `Dockerfile`
-
-- change the path according to your dir (it doesnt have to be exactly same):
+Same thing as creating new project: only you change the path according to your dir:
 
 ```yaml
 # from this
@@ -78,4 +80,23 @@ same thing with option 1:
   app:
     volumes:
       - ./:/home/elixiruser/app
+
+# or this (example)
+  <DIR_NAME>:
+    volumes:
+      - ./<DIR_NAME>:/home/elixiruser/app
+```
+
+## `CSRF tokens do not match`
+
+if it says `csrf tokens do not match` on pgadmin, try clearing cookies or use incognito.
+
+## other useful commands
+
+```bash
+# check ip of running container
+docker inspect <CONTAINER_NAME> | grep IPAddress
+
+# list open ports
+sudo lsof -i -P -n | grep LISTEN
 ```

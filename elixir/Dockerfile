@@ -2,7 +2,7 @@ FROM elixir:alpine
 
 ENV HOMEDIR /home/elixiruser/app
 
-RUN apk add postgresql-client inotify-tools npm
+RUN apk add postgresql-client inotify-tools npm git
 
 RUN addgroup -S -g 1001 elixiruser && \
     adduser -S -u 1000 -G elixiruser elixiruser
