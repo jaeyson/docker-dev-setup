@@ -71,6 +71,8 @@ docker-compose run --rm app mix test
 Same thing as creating new project: only you change the path according to your dir:
 
 ```yaml
+# docker-compose.yml
+
 # from this
   app:
     volumes:
