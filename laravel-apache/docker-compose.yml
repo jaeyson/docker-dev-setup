@@ -1,0 +1,78 @@
+version: '3'
+
+services:
+    phpmyadmin:
+        container_name: phpmyadmin
+        image: phpmyadmin/phpmyadmin:latest
+        restart: always
+        environment:
+            PMA_ARBITRARY: 1
+            PMA_HOST: mysql
+        ports:
+            - "8080:80"
+
+    mysql:
+        image: mysql:5.7.29
+        container_name: mysql
+        restart: unless-stopped
+        tty: true
+        volumes:
+            - ./mysql:/var/lib/mysql
+            - ./sql:/docker-entrypoint-initdb.d
+        ports:
+            - "3306:3306"
+        env_file:
+          - ./app/mysql.env
+        environment:
+            MYSQL_DATABASE: $DB_DATABASE
+            MYSQL_USER: $DB_USERNAME
+            MYSQL_PASSWORD: $DB_PASSWORD
+            MYSQL_ROOT_PASSWORD: root # change this!
+            # SERVICE_TAGS: dev
+            # SERVICE_NAME: mysql
+
+    php:
+        build:
+            context: .
+            dockerfile: php.dockerfile
+        container_name: php
+        volumes:
+            - ./web_app:/var/www/html
+        ports:
+            - "9000:80"
+        env_file:
+          - ./app/laravel.env
+
+    composer:
+        image: composer:latest
+        container_name: composer
+        volumes:
+            - ./web_app:/var/www/html
+        working_dir: /var/www/html
+        entrypoint: ['composer', '--ignore-platform-reqs']
+        depends_on:
+            - php
+
+    # comment this service if you have
+    # npm already installed locally
+    npm:
+        image: node:13.7
+        container_name: npm
+        volumes:
+            - ./web_app:/var/www/html
+        working_dir: /var/www/html
+        entrypoint: ['npm']
+
+    artisan:
+        build:
+            context: .
+            dockerfile: php.dockerfile
+        container_name: artisan
+        volumes:
+            - ./web_app:/var/www/html
+        depends_on:
+            - mysql
+        ports:
+        - "8000:8000"
+        working_dir: /var/www/html
+        entrypoint: ['php', '/var/www/html/artisan']
