@@ -37,33 +37,36 @@ docker ps
 mkdir app && cd $_
 
 # add Elixir project
-docker-compose run --rm app mix new . <APP_NAME>
+docker exec -it app mix new . <APP_NAME>
 
 # add Phoenix project
-docker-compose run --rm app mix phx.new . --app <APP_NAME>
+docker exec -it app mix phx.new . --app <APP_NAME>
 
 # get deps
-docker-compose run --rm app mix deps.get
+docker exec -it app mix deps.get
 
 # create db
 docker exec -it db psql -U postgres -c 'create database <DB_NAME>;'
 
 # ecto.create && migrate
-docker-compose run --rm app mix ecto.create
-docker-compose run --rm app mix ecto.migrate
+docker exec -it app mix ecto.create
+docker exec -it app mix ecto.migrate
 
 # install npm deps
-docker-compse run --rm app npm install --prefix ./assets
+docker exec -it app npm install --prefix ./assets
 
 # run server
 docker exec -it app mix phx.server
+
+# use API v2 (ie resource limits)
+docker-compose --compatibility up
 ```
 
 ## test
 
 ```bash
 # should be inside app/ folder before running command
-docker-compose run --rm app mix test
+docker exec -it app mix test
 ```
 
 ## existing project
@@ -96,6 +99,9 @@ if it says `csrf tokens do not match` on pgadmin, try clearing cookies or use in
 ```bash
 # check ip of running container
 docker inspect <CONTAINER_NAME> | grep IPAddress
+
+# runtime metrics of a container
+docker stats <CONTAINER_NAME>
 
 # list open ports
 sudo lsof -i -P -n | grep LISTEN

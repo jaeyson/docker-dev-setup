@@ -1,9 +1,24 @@
-version: "3"
+version: "3.8"
 
 services:
   db:
     container_name: db # use this hostname at config/dev.exs
     image: postgres:alpine
+    # mem_limit: 256MB
+    # mem_reservation: 256MB
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
     restart: always
     environment:
       # POSTGRES_DB: app_dev # config/dev.exs
@@ -34,6 +49,19 @@ services:
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
     environment:
       PGADMIN_DEFAULT_EMAIL: $${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: $${{PGADMIN_DEFAULT_PASSWORD}}
