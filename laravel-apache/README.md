@@ -25,14 +25,11 @@ Laravel
 git clone https://github.com/laravel/laravel web_app --single-branch --branch master --depth 1 
 ```
 
-## check config and `.env` file
+## check config
 
 ### note: `DB_HOST` variable is based on container name of db, check also `DB_PASSWORD` etc.
 
 ```bash
-# go to web_app dir
-cd web_app
-
 docker-compose config
 ```
 
