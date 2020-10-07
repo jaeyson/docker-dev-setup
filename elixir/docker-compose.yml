@@ -1,32 +1,19 @@
-version: "3.8"
+version: "2.4"
 
 services:
   db:
     container_name: db # use this hostname at config/dev.exs
     image: postgres:alpine
-    # mem_limit: 256MB
-    # mem_reservation: 256MB
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 256M
-        reservations:
-          cpus: '0.25'
-          memory: 256M
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
     restart: always
+    cpu_count: 1
+    cpus: 0.5
+    cpu_percent: 30
+    mem_reservation: 256m
+    mem_limit: 256m
+    env_file: .env
     environment:
-      # POSTGRES_DB: app_dev # config/dev.exs
-      POSTGRES_USER: $${POSTGRES_USER}
-      POSTGRES_PASSWORD: $${POSTGRES_PASSWORD}
       # POSTGRES_HOST_AUTH_METHOD: trust
       PGDATA: /var/lib/postgresql/data/pgdata
-      # user: ${USER}
     ports:
       - "5432:5432"
     volumes:
@@ -38,6 +25,11 @@ services:
       context: .
       dockerfile: Dockerfile
     stdin_open: true
+    cpu_count: 1
+    cpus: 0.5
+    cpu_percent: 30
+    mem_reservation: 256m
+    mem_limit: 256m
     tty: true
     volumes:
       - ./app:/home/elixiruser/app
@@ -49,22 +41,12 @@ services:
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4:latest
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 256M
-        reservations:
-          cpus: '0.25'
-          memory: 256M
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-    environment:
-      PGADMIN_DEFAULT_EMAIL: $${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: $${{PGADMIN_DEFAULT_PASSWORD}}
+    cpu_count: 1
+    cpus: 0.5
+    cpu_percent: 30
+    mem_reservation: 256m
+    mem_limit: 256m
+    env_file: .env
     ports:
       - "5555:80"
     depends_on:

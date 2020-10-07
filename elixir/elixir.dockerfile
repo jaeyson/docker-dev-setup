@@ -16,5 +16,3 @@ USER elixiruser
 RUN mix local.hex --force
 RUN mix local.rebar --force
 RUN mix archive.install hex phx_new --force
-
-EXPOSE 4000
