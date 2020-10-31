@@ -25,14 +25,11 @@ Laravel
 git clone https://github.com/laravel/laravel web_app --single-branch --branch master --depth 1 
 ```
 
-## check config and `.env` file
+## check config
 
 ### note: `DB_HOST` variable is based on container name of db, check also `DB_PASSWORD` etc.
 
 ```bash
-# go to web_app dir
-cd web_app
-
 docker-compose config
 ```
 
@@ -85,7 +82,16 @@ once done, visit `localhost:9000`
 # go to php container
 docker exec -it php bash
 
-# enter this commands
-sudo chgrp -R www-data storage bootstrap/cache
-sudo chmod -R ug+rwx storage bootstrap/cache
+# change permissions and group for these folders
+chgrp -R www-data storage bootstrap/cache
+chmod -R ug+rwx storage bootstrap/cache
+```
+
+## All Routes Except Home Result in 404 Error
+
+```bash
+# go to php container
+docker exec -it php bash
+
+a2enmod rewrite && service apache2 restart
 ```
